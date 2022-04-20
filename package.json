@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Koulinn/rafa_blog_coders_guild#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cloudinary": "^1.29.0",
     "cors": "^2.8.5",
     "express": "^4.17.3",
