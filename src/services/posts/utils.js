@@ -49,19 +49,48 @@ const saveImgUrl = async (req, res, next) => {
     }
 }
 
-const getPosts = async (req, res, next) => {
+const getAllPosts = async (req, res, next) => {
     try {
-        const all_posts = await POST_SCHEMA.find()
-        if (all_posts.length > 0) {
-            res.status(200).send({
-                success: true,
-                all_posts
-            })
+        if (req.query.all === 'true') {
+            const all_posts = await POST_SCHEMA.find()
+            if (all_posts.length > 0) {
+                res.status(200).send({
+                    success: true,
+                    all_posts
+                })
+            }
         } else {
             res.status(404).send({
                 success: false,
                 msg: 'No posts found'
             })
+        }
+    } catch (error) {
+        console.log(error)
+        next()
+    }
+}
+
+const getAllWriterPosts = async (req, res, next) => {
+    try {
+        if (Object.keys(req.query).length > 0) {
+            next()
+        } else {
+            const all_posts = await POST_SCHEMA.find({
+                author_code: req.author.code
+            })
+
+            if (all_posts.length > 0) {
+                res.status(200).send({
+                    success: true,
+                    all_posts
+                })
+            } else {
+                res.status(404).send({
+                    success: false,
+                    msg: 'No posts found'
+                })
+            }
         }
     } catch (error) {
         console.log(error)
@@ -137,6 +166,13 @@ const editPost = async (req, res, next) => {
     }
 }
 
-const posts_utils = { create, saveImgUrl, getPosts, handleLike, editPost }
+const posts_utils = {
+    create,
+    saveImgUrl,
+    getAllPosts,
+    handleLike,
+    editPost,
+    getAllWriterPosts
+}
 
 export default posts_utils
