@@ -1,14 +1,20 @@
 import express from 'express'
 import posts_utils from './utils.js'
-import POST_SCHEMA from '../../db/Schemas/Posts.js'
 import multer from 'multer'
 import savePostImage from '../../util/uploadImgs.js'
 
-const { getPosts, create, saveImgUrl, handleLike, editPost } = posts_utils
+const {
+    getAllPosts,
+    getAllWriterPosts,
+    create,
+    saveImgUrl,
+    handleLike,
+    editPost
+} = posts_utils
 
 const router = express.Router()
 
-router.route('/').get(getPosts).post(create)
+router.route('/').get(getAllWriterPosts, getAllPosts).post(create)
 
 router.route('/like/:postId').put(handleLike)
 
